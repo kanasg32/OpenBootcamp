@@ -11,6 +11,7 @@ namespace OpenBootCamp.KanaSG.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Curso> Cursos { get; set; }
     
     }
 }
