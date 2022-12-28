@@ -21,17 +21,25 @@ namespace OpenBootCamp.KanaSG.Controllers
             _context = context;
         }
 
-        // GET: api/Cursoes
+        // GET: api/Cursos
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Curso>>> GetCursos()
         {
+          if (_context.Cursos == null)
+          {
+              return NotFound();
+          }
             return await _context.Cursos.ToListAsync();
         }
 
-        // GET: api/Cursoes/5
+        // GET: api/Cursos/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Curso>> GetCurso(int id)
         {
+          if (_context.Cursos == null)
+          {
+              return NotFound();
+          }
             var curso = await _context.Cursos.FindAsync(id);
 
             if (curso == null)
@@ -42,7 +50,7 @@ namespace OpenBootCamp.KanaSG.Controllers
             return curso;
         }
 
-        // PUT: api/Cursoes/5
+        // PUT: api/Cursos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCurso(int id, Curso curso)
@@ -73,21 +81,29 @@ namespace OpenBootCamp.KanaSG.Controllers
             return NoContent();
         }
 
-        // POST: api/Cursoes
+        // POST: api/Cursos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Curso>> PostCurso(Curso curso)
         {
+          if (_context.Cursos == null)
+          {
+              return Problem("Entity set 'AppDBContext.Cursos'  is null.");
+          }
             _context.Cursos.Add(curso);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCurso", new { id = curso.Id }, curso);
         }
 
-        // DELETE: api/Cursoes/5
+        // DELETE: api/Cursos/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCurso(int id)
         {
+            if (_context.Cursos == null)
+            {
+                return NotFound();
+            }
             var curso = await _context.Cursos.FindAsync(id);
             if (curso == null)
             {
@@ -102,7 +118,7 @@ namespace OpenBootCamp.KanaSG.Controllers
 
         private bool CursoExists(int id)
         {
-            return _context.Cursos.Any(e => e.Id == id);
+            return (_context.Cursos?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
